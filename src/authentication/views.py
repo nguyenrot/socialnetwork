@@ -1,6 +1,6 @@
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from rest_framework.views import APIView
-from .serializers import UserSerializer, EmailVerificationSerializer
+from .serializers import UserSerializer, EmailVerificationSerializer, LoginSerializer
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from django.conf import settings
@@ -8,7 +8,8 @@ from .models import User
 from .utils import Util
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-import jwt
+from rest_framework.decorators import permission_classes, api_view
+import jwt, requests
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 
@@ -18,6 +19,23 @@ class AuthInfo(APIView):
 
     def get(self, request):
         return Response(settings.OAUTH2_INFO, status=status.HTTP_200_OK)
+
+
+class Login(generics.GenericAPIView):
+    serializer_class = LoginSerializer
+
+    def post(self, request):
+        r = requests.post(
+            'http://127.0.0.1:8000/auth/o/token/',
+            data={
+                'grant_type': 'password',
+                'username': request.data.get('username'),
+                'password': request.data.get('password'),
+                'client_id': settings.OAUTH2_INFO["CLIENT_ID"],
+                'client_secret': settings.OAUTH2_INFO["CLIENT_SECRET"],
+            },
+        )
+        return Response(r.json())
 
 
 class UserViewSet(generics.GenericAPIView):
@@ -49,7 +67,8 @@ class UserViewSet(generics.GenericAPIView):
         try:
             return Response(self.serializer_class(request.user).data, status=status.HTTP_200_OK)
         except:
-            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_200_OK)
+            return Response({"detail": "Authentication credentials were not provided."},
+                            status=status.HTTP_403_FORBIDDEN)
 
 
 class VerifyEmail(APIView):

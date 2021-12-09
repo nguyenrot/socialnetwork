@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'oauth2_provider',
     'authentication',
     'drf_yasg',
-
+    'post',
 ]
 
 REST_FRAMEWORK = {
@@ -66,9 +66,9 @@ SWAGGER_SETTINGS = {
 }
 
 OAUTH2_INFO = {
-    "CLIENT_ID": "c5ddJHp8mYsc6PJdhuwi1UR1lIlQm7cdQ9sCJTKB",
-    "CLIENT_SECRET": "LePvBPByESTDP0A2K6MgfO6g2eiZ1iUnRvGNeMzItOXaZWtbReOXpS7wJ4Eu0cX9Zs9UiwXR21R\
-K6YRMDWw9tewNRlVA9gwJY92lAx4f9o8shjfFmZDZn0iIsroYmj8J"
+    "CLIENT_ID": "qjXvf0mpnZsYSVquK0R4JHfsqFktzkLLhEju51O6",
+    "CLIENT_SECRET": "iSj8O7BMX21mzBobHHGC55pp176iBQTJtaN5gGp2OItJpvwulF3bq6jthbUsjqb0Gd3mohCOmeHaI\
+ShLC7dV88oXoQQgGGnfl3NNUrAKOlCTVfNMVld8Iv375N7345Zx"
 }
 
 AUTH_USER_MODEL = 'authentication.User'
